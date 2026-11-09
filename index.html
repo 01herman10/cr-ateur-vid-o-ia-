@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Créateur vidéo IA</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+.groupe{display:flex;flex-direction:column;gap:12px}
+.tools{display:grid;grid-template-columns:1fr;gap:14px}
+@media (min-width:700px){.tools{grid-template-columns:1fr 1fr}}
+.tool{display:flex;flex-direction:column;gap:6px;text-decoration:none;color:inherit;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px}
+a.tool:hover{border-color:var(--accent)}
+.tool b{font-family:var(--f-display);font-size:18px;color:var(--accent)}
+.tool span{color:var(--muted);font-size:14px}
+.tool small{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Créateur vidéo IA</div>
+    <h1>Créez vos vidéos avec l'IA</h1>
+    <p class="lead">Voix, sous-titres, détourage, montage et vidéos animées. Les outils de cette page tournent dans le navigateur, sur ordinateur comme sur téléphone : vos fichiers restent sur votre appareil.</p>
+  </header>
+
+  <section class="groupe">
+    <h2>Dans le navigateur</h2>
+    <div class="tools">
+      <a class="tool" href="studio.html"><b>Studio vidéo IA</b><span>Fond, personnage animé, voix IA et sous-titres réunis dans une vidéo prête à publier.</span><small>Piper · ffmpeg.wasm</small></a>
+      <a class="tool" href="voix.html"><b>Voix IA</b><span>Transformez un texte en voix française et téléchargez le son.</span><small>Piper</small></a>
+      <a class="tool" href="sous-titres.html"><b>Sous-titres IA</b><span>L'IA écrit les sous-titres de votre vidéo, puis les incruste.</span><small>Whisper · transformers.js</small></a>
+      <a class="tool" href="detourage.html"><b>Détourage IA</b><span>Retirez le fond d'une photo pour créer vos personnages et visuels.</span><small>MODNet · ORMBG</small></a>
+      <a class="tool" href="video.html"><b>Atelier vidéo</b><span>Couper, compresser, convertir en GIF ou extraire le son d'une vidéo.</span><small>ffmpeg.wasm</small></a>
+    </div>
+  </section>
+
+  <section class="groupe">
+    <h2>Avec Claude Code</h2>
+    <p class="lead">Ouvrez une session Claude Code sur ce projet et décrivez la vidéo voulue : « Fais une vidéo de lancement pour mon site », « Monte mes rushs et coupe les blancs », « Ajoute le sound design ».</p>
+    <div class="tools">
+      <div class="tool"><b>Vidéos de lancement</b><span>Un lien de produit devient une vidéo de lancement ; 15 compétences pour lancements, graphiques animés et réels.</span><small>Product Launch Motion · Motion Graphics Skills</small></div>
+      <div class="tool"><b>Montage de vos vidéos</b><span>Coupe les blancs et les ratés de vos rushs, ajoute animations et sous-titres.</span><small>HyperFrames</small></div>
+      <div class="tool"><b>Sound design</b><span>Sons créés par le code, calés sur l'image, et vérification image par image.</span><small>Claude Motion</small></div>
+      <div class="tool"><b>Fondations</b><span>Les 12 principes d'animation de Disney, pour un mouvement naturel.</span><small>Motion Design</small></div>
+      <div class="tool"><b>Vidéos d'annonce en série</b><span>Une vidéo verticale par produit, créée depuis l'onglet Actions de GitHub.</span><small>Remotion</small></div>
+    </div>
+  </section>
+
+  <p class="fine">Les outils inclus sont des logiciels libres ; leurs licences sont dans <span class="mono">lib/</span>, <span class="mono">.claude/skills/</span> et <span class="mono">claude-motion/</span>.</p>
+</div>
+</body>
+</html>

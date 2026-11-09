@@ -1,0 +1,59 @@
+# Crée une vidéo d'annonce (format vertical) avec Remotion.
+# Lancement : onglet « Actions » du dépôt > « Créer une vidéo d'annonce » > « Run workflow ».
+name: Créer une vidéo d'annonce
+
+on:
+  workflow_dispatch:
+    inputs:
+      etiquette:
+        description: "Étiquette en haut (ex. Nouveau, À vendre, Promo)"
+        required: false
+        default: "Nouveau"
+      titre:
+        description: "Titre (ex. le nom du produit)"
+        required: true
+        default: "Votre produit"
+      details:
+        description: "Détails (ex. Neuf · Garantie 1 an)"
+        required: false
+        default: "Neuf · Garantie 1 an"
+      prix:
+        description: "Prix (ex. 25 000 FCFA)"
+        required: true
+        default: "25 000 FCFA"
+      lieu:
+        description: "Dernière ligne (ex. Livraison rapide)"
+        required: false
+        default: "Livraison rapide"
+
+permissions:
+  contents: read
+
+jobs:
+  video:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: video
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: video/package-lock.json
+      - run: npm ci
+      - name: Rendu de la vidéo
+        env:
+          ETIQUETTE: ${{ inputs.etiquette }}
+          TITRE: ${{ inputs.titre }}
+          DETAILS: ${{ inputs.details }}
+          PRIX: ${{ inputs.prix }}
+          LIEU: ${{ inputs.lieu }}
+        run: |
+          node -e 'const e=process.env;require("fs").writeFileSync("props.json", JSON.stringify({etiquette:e.ETIQUETTE, titre:e.TITRE, details:e.DETAILS, prix:e.PRIX, lieu:e.LIEU}))'
+          npx remotion render src/index.ts Annonce out/annonce.mp4 --props=props.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: video-annonce
+          path: video/out/annonce.mp4
