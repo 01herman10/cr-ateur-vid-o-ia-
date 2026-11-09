@@ -28,6 +28,37 @@ Ces compétences s'appuient sur Node.js, ffmpeg et Chromium, et installent leurs
 Certaines options utilisent des services payants (voix HeyGen ou ElevenLabs, par exemple) : elles ne servent que si une clé d'API est fournie ; sinon, les compétences utilisent des solutions gratuites.
 Le fichier de licence de chaque outil est dans son dossier.
 
+## Services d'IA en ligne
+
+Le carrousel « 7 outils IA payants… et leur version gratuite » présente 14 outils. Voici où en est chacun.
+
+**Installé :**
+
+| Service | Ce qu'il fait | Comment | Compte |
+|---|---|---|---|
+| **ElevenLabs** | Voix off de grande qualité | Connecteur hébergé officiel, déclaré dans `.mcp.json` : il tourne sur les serveurs d'ElevenLabs, rien n'est installé | Connexion à son compte ElevenLabs ; offre gratuite de 10 000 crédits par mois |
+
+**Disponibles, pas encore installés** (ils téléchargent et lancent leur propre programme sur l'ordinateur : à ajouter seulement si vous le décidez) :
+
+| Service | Ce qu'il fait | Source et licence | Compte |
+|---|---|---|---|
+| **MiniMax** (et **Hailuo**) | Voix, vidéos Hailuo, images, musique | github.com/MiniMax-AI/MiniMax-MCP, MIT (officiel) | Clé `MINIMAX_API_KEY` |
+| **Nano Banana** | Création et retouche d'images (Gemini) | github.com/ConechoAI/Nano-Banana-MCP, MIT (communautaire) | Clé `GEMINI_API_KEY` (offre gratuite Google AI Studio) |
+| **Higgsfield** | Images et vidéos (30+ modèles), photos produit, vidéos sans visage, miniatures YouTube | github.com/higgsfield-ai/skills, MIT (officiel) | Compte Higgsfield payant |
+
+**Non installables ici :**
+
+| Outil | Pourquoi |
+|---|---|
+| HeyGen (avatars) | Déjà couvert : HyperFrames (compétence `media-use`) sait utiliser les avatars et voix HeyGen |
+| Hedra (avatars) | Pas d'outil libre sous licence sur GitHub ; s'utilise sur hedra.com |
+| Midjourney (images) | Aucune interface officielle pour les programmes ; s'utilise sur midjourney.com |
+| Runway (vidéos) | Connecteur officiel hébergé, à ajouter dans les connecteurs de claude.ai (runway.com/mcp) ; crédits Runway payants |
+| Stable Diffusion | Logiciel libre (ComfyUI), mais il faut un ordinateur avec une carte graphique puissante |
+| Canva Pro (design) | Connecteur Canva disponible dans les connecteurs de claude.ai |
+| Lovart (design) | La compétence publiée par Lovart n'a pas de licence : elle ne peut pas être copiée ici |
+| CapCut Pro, Edits (montage) | Applications à installer ; le montage est déjà couvert par HyperFrames |
+
 ## Modèles d'IA
 
 Les moteurs d'IA tournent dans le navigateur. Les modèles sont téléchargés depuis huggingface.co au premier usage, puis gardés en cache par le navigateur :
