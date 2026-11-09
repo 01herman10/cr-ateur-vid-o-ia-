@@ -23,6 +23,7 @@ Ouvrez une session Claude Code sur ce dépôt et demandez simplement, par exempl
 | Montage de vos vidéos | **HyperFrames** : coupe les blancs et les ratés, ajoute animations et sous-titres | `hyperframes`, `hyperframes-cli`, `media-use`, `reverse-any-video`, `slideshow`… | heygen-com/hyperframes, Apache 2.0 |
 | Sound design | **Claude Motion** : goût du mouvement, vérification des images, moteur de sons sans échantillons | `claude-motion-design`, `sound-design`, `review-loop`, `web-sims` (outils dans `claude-motion/`) | whaleyxbt/claude-motion, MIT |
 | Effets sur vos vidéos face caméra | **Claude Video Effects** : 51 effets qui suivent votre visage (orbite, projecteur, widgets en verre, bulles iMessage, mur de titres…), certains passent derrière votre tête | `effects` (tapez `/effects`) | Vibha-Ramprakash/claude-video-effects, MIT (polices OFL, modèles MIT et Apache 2.0) |
+| Recherche et idées | **Agent-Reach** : Claude lit YouTube (sous-titres, transcriptions), le web, GitHub et, avec votre connexion, Reddit, X, Instagram, LinkedIn — en lecture seule, jamais de publication | `agent-reach` (le programme s'installe au premier usage, version 1.6.1) | Panniantong/Agent-Reach, MIT |
 | Fondations | **Motion Design** : les 12 principes d'animation de Disney, adaptés | `motion-design` | LottieFiles/motion-design-skill, MIT |
 
 Ces compétences s'appuient sur Node.js, Python, ffmpeg et Chromium, et installent leurs outils (`npx hyperframes`, `npm install`) au moment où on s'en sert.
