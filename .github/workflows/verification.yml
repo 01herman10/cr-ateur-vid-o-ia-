@@ -1,9 +1,11 @@
 # Vérifie à chaque envoi que tous les liens et fichiers utilisés par les pages existent bien.
+# Peut aussi être lancée à la main : onglet « Actions » > « Vérification du site » > « Run workflow ».
 name: Vérification du site
 
 on:
   push:
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
