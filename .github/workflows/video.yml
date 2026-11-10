@@ -36,8 +36,8 @@ jobs:
       run:
         working-directory: video
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: 22
           cache: npm
@@ -53,7 +53,7 @@ jobs:
         run: |
           node -e 'const e=process.env;require("fs").writeFileSync("props.json", JSON.stringify({etiquette:e.ETIQUETTE, titre:e.TITRE, details:e.DETAILS, prix:e.PRIX, lieu:e.LIEU}))'
           npx remotion render src/index.ts Annonce out/annonce.mp4 --props=props.json
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: video-annonce
           path: video/out/annonce.mp4
