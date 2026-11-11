@@ -130,6 +130,26 @@ for t, kind, p in cues:
 mix = music * 0.5 + fx * 0.62
 mix *= 0.84 / np.abs(mix).max()   # crête réelle sous -0,5 dBTP
 out = os.path.join(HERE, "mix.wav")
+
+# Voix off (si vo/voix.wav existe) : la musique baisse d'environ 9 dB et les bruitages de 3 dB pendant qu'elle parle.
+VO = os.path.join(HERE, "vo", "voix.wav")
+if os.path.exists(VO) and os.environ.get("SANS_VOIX") != "1":
+    v = read_wav(VO)[:, 0][:N]; v = np.pad(v, (0, N - len(v)))
+    win = int(0.03 * SR)
+    act = (np.convolve(np.abs(v), np.ones(win) / win, "same") > 0.01).astype(float)
+    # attaque 60 ms, relâchement 300 ms, sans état : deux lissages exponentiels appliqués par convolution
+    att = np.exp(-np.arange(int(0.3 * SR)) / (0.3 * SR / 4)); att /= att.sum()
+    act = np.clip(np.convolve(act, att, "full")[:N] * 4, 0, 1)
+    act = np.maximum(act, np.clip(np.convolve(act[::-1], np.exp(-np.arange(int(0.06 * SR)) / (0.015 * SR)), "full")[:N][::-1] / (0.015 * SR), 0, 1))
+    mus = music * 0.5 * (1 - 0.65 * act)[:, None]
+    bru = fx * 0.62 * (1 - 0.3 * act)[:, None]
+    voix = v[:, None] * 1.0
+    # niveau de la voix : environ 6 dB au-dessus de la musique baissée
+    rv = np.sqrt((voix[act > 0.5] ** 2).mean()); rm = np.sqrt((mus[act > 0.5] ** 2).mean())
+    voix *= (rm * 2.0) / rv
+    mix = mus + bru + voix
+    mix *= 0.84 / np.abs(mix).max()
+    out = os.path.join(HERE, "mix-voix.wav")
 with wave.open(out, "wb") as w:
     w.setnchannels(2); w.setsampwidth(2); w.setframerate(SR)
     w.writeframes((mix * 32767).astype("<i2").tobytes())
