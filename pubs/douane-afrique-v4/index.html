@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Douane Afrique · pub v4</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+:root{--bg:#EDF1F0;--surface:#FFFFFF;--ink:#15232A;--muted:#566870;--line:#D2DBDA;--accent:#0D5A66;--mark:#F2C230;--ok:#1E7448;--okbg:#E5F3EB;--red:#C2412D;--redbg:#FBE8E6;
+  --fd:"Archivo","Arial Narrow",Arial,sans-serif;--fb:"IBM Plex Sans",system-ui,sans-serif;--fm:"IBM Plex Mono",ui-monospace,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--bg)}
+body{font-family:var(--fb);color:var(--ink);-webkit-font-smoothing:antialiased}
+#stage{position:absolute;inset:0;overflow:hidden}
+#bg{position:absolute;inset:0}
+#world{position:absolute;left:0;top:0;width:1080px;height:1920px;transform-origin:0 0}
+.it{position:absolute;left:0;top:0}
+.card{background:var(--surface);border:2px solid var(--line);border-radius:36px;box-shadow:0 40px 90px rgba(21,35,42,.14)}
+.eyebrow{font:600 24px var(--fm);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.row{display:flex;align-items:center}
+.disp{font-family:var(--fd)}.mono{font-family:var(--fm)}
+.chip{display:inline-flex;align-items:center;gap:14px;padding:18px 30px;border-radius:999px;font:700 36px var(--fb);white-space:nowrap}
+/* téléphone de recherche */
+.phone{width:600px;height:1100px;border-radius:80px;background:#11181B;padding:18px;box-shadow:0 50px 120px rgba(21,35,42,.3)}
+.phone .scr{position:relative;width:100%;height:100%;border-radius:64px;overflow:hidden;background:#fff}
+.notch{position:absolute;left:50%;top:18px;width:150px;height:36px;border-radius:18px;background:#11181B;transform:translateX(-50%)}
+.search{margin:96px 30px 0;height:96px;border-radius:48px;border:2px solid var(--line);display:flex;align-items:center;gap:18px;padding:0 30px;font:500 32px var(--fb)}
+.res{margin:26px 30px 0;padding:26px 28px;border-radius:28px;border:2px solid var(--line)}
+.res .u{font:500 22px var(--fm);color:var(--ok)}
+.res .t{font:700 34px var(--fb);color:#1A4FB5;margin-top:6px}
+.res .d{font:400 24px/1.35 var(--fb);color:var(--muted);margin-top:8px}
+/* vitrine */
+#vit{width:960px;height:1220px;border-radius:40px;background:var(--bg);border:2px solid var(--line);overflow:hidden;box-shadow:0 40px 100px rgba(21,35,42,.18)}
+.bar{height:84px;background:#fff;border-bottom:2px solid var(--line);display:flex;align-items:center;gap:16px;padding:0 30px}
+.url{flex:1;height:52px;border-radius:26px;background:var(--bg);display:flex;align-items:center;padding:0 24px;font:500 24px var(--fm);color:var(--muted)}
+.navv{display:flex;justify-content:space-between;padding:26px 40px;font:600 28px var(--fb);color:var(--accent)}
+.hero{margin:0 30px;height:1010px;border-radius:30px;background:linear-gradient(180deg,#121318 0%,#04202c 55%,#002a3a 100%);color:#F4F7F6;position:relative;overflow:hidden;padding:52px 48px}
+.hero h1{font:800 76px/1.04 var(--fd);margin-top:20px;letter-spacing:-.01em}
+.hero p{font:400 30px/1.4 var(--fb);color:#D5E0DF;margin-top:22px}
+.hbtn{display:inline-flex;align-items:center;justify-content:center;height:96px;padding:0 40px;border-radius:16px;font:700 34px var(--fb)}
+/* calculateur */
+#calc{width:960px;height:1180px;overflow:hidden}
+.grp{position:absolute;left:0;top:0;width:100%;height:100%;padding:56px 56px}
+.fld{border-radius:22px;background:var(--bg);border:2px solid var(--line);padding:18px 28px;margin-top:18px}
+.fld .k{font:500 26px var(--fb);color:var(--muted)}.fld .v{font:700 44px var(--fb);height:58px;display:flex;align-items:center}
+.ctry{height:104px;border-radius:22px;border:2px solid var(--line);background:var(--bg);display:flex;align-items:center;justify-content:space-between;padding:0 28px;margin-top:16px;font:700 38px var(--fb)}
+.ctry small{display:block;font:500 24px var(--fb);color:var(--muted)}
+.radio{width:44px;height:44px;border-radius:50%;border:3px solid var(--line);background:#fff}
+.caret{display:inline-block;width:4px;height:46px;background:var(--accent);border-radius:2px;margin-left:4px}
+.ln{display:grid;grid-template-columns:110px 1fr auto;align-items:center;gap:20px;padding:16px 10px;border-bottom:2px solid var(--line);border-radius:12px}
+.code{font:600 24px var(--fm);color:var(--muted);border:2px solid var(--line);border-radius:10px;text-align:center;padding:6px 0;background:var(--bg)}
+.ln .l{font:600 34px var(--fb)}.ln .a{font:600 36px var(--fm)}
+.band{margin-top:26px;border-radius:24px;background:var(--mark);padding:24px 30px;display:flex;justify-content:space-between;align-items:center}
+.slot{position:relative;width:.6em;overflow:hidden;clip-path:inset(0 -40px)}
+.strip{position:absolute;left:0;top:0;display:flex;flex-direction:column}
+.strip span{display:block;text-align:center}
+.cb{width:58px;height:58px;border-radius:16px;border:3px solid var(--line);background:#fff;flex:none;position:relative}
+.bub{border-radius:34px;padding:26px 34px;font:500 38px/1.3 var(--fb)}
+/* pays */
+.dot{position:absolute;width:86px;height:86px;border-radius:22px;background:#fff;border:2px solid var(--line)}
+/* fin */
+.act{display:flex;flex-direction:column;align-items:center;gap:14px;font:700 32px var(--fb);width:240px}
+.act .c{width:150px;height:150px;border-radius:50%;background:#fff;border:3px solid var(--line);display:flex;align-items:center;justify-content:center}
+#cur{position:absolute;left:0;top:0;width:0;height:0}
+#cur .pillv{position:absolute;left:44px;top:50px;background:var(--ink);color:#fff;font:600 26px var(--fb);padding:8px 18px;border-radius:999px;white-space:nowrap}
+.ripple{position:absolute;border:4px solid var(--accent);border-radius:50%;transform:translate(-50%,-50%)}
+#caps{position:absolute;left:90px;right:90px;top:1555px;transform:translateY(-50%);text-align:center;font:800 56px/1.16 var(--fd)}
+#caps span{display:inline-block;margin:0 .13em;white-space:nowrap}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="bg"></div>
+  <div id="world">
+
+    <!-- le bonhomme -->
+    <svg class="it" id="bon" width="300" height="470" viewBox="0 0 300 470" style="overflow:visible">
+      <ellipse cx="150" cy="458" rx="110" ry="12" fill="rgba(21,35,42,.12)"/>
+      <g id="corps">
+        <rect x="98" y="300" width="44" height="150" rx="20" fill="#1E2A30"/><rect x="158" y="300" width="44" height="150" rx="20" fill="#1E2A30"/>
+        <rect x="88" y="436" width="62" height="24" rx="12" fill="#15232A"/><rect x="152" y="436" width="62" height="24" rx="12" fill="#15232A"/>
+        <rect x="80" y="168" width="140" height="160" rx="46" fill="#0D5A66"/>
+        <path d="M128 172 L150 200 L172 172" fill="none" stroke="#F2C230" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+        <g id="brasG" transform="rotate(0 92 192)"><rect x="70" y="180" width="30" height="78" rx="15" fill="#0D5A66"/>
+          <g id="avG" transform="rotate(0 85 250)"><rect x="72" y="244" width="26" height="66" rx="13" fill="#8B5A3C"/><circle cx="85" cy="312" r="16" fill="#8B5A3C"/></g></g>
+        <g id="brasD" transform="rotate(0 208 192)"><rect x="200" y="180" width="30" height="78" rx="15" fill="#0D5A66"/>
+          <g id="avD" transform="rotate(0 215 250)"><rect x="202" y="244" width="26" height="66" rx="13" fill="#8B5A3C"/><circle cx="215" cy="312" r="16" fill="#8B5A3C"/>
+            <g id="pouce" opacity="0"><rect x="207" y="280" width="14" height="30" rx="7" fill="#8B5A3C"/></g>
+            <g id="tel" opacity="0"><rect x="190" y="282" width="52" height="88" rx="10" fill="#11181B"/><rect x="195" y="290" width="42" height="70" rx="6" fill="#DDE7E6"/></g></g></g>
+        <g id="tete" transform="rotate(0 150 150)">
+          <rect x="134" y="140" width="32" height="34" rx="10" fill="#7A4E33"/>
+          <circle cx="150" cy="100" r="64" fill="#8B5A3C"/>
+          <circle cx="86" cy="104" r="12" fill="#7A4E33"/><circle cx="214" cy="104" r="12" fill="#7A4E33"/>
+          <path d="M88 92 Q92 32 150 34 Q208 32 212 92 Q196 60 150 60 Q104 60 88 92 Z" fill="#1B1410"/>
+          <g id="yeux"><ellipse cx="126" cy="104" rx="8" ry="10" fill="#15110D"/><ellipse cx="174" cy="104" rx="8" ry="10" fill="#15110D"/>
+            <circle cx="129" cy="100" r="2.6" fill="#fff"/><circle cx="177" cy="100" r="2.6" fill="#fff"/></g>
+          <path id="sourcilG" d="M112 84 Q126 78 138 84" fill="none" stroke="#1B1410" stroke-width="5" stroke-linecap="round"/>
+          <path id="sourcilD" d="M162 84 Q174 78 188 84" fill="none" stroke="#1B1410" stroke-width="5" stroke-linecap="round"/>
+          <ellipse id="bouche" cx="150" cy="136" rx="14" ry="3" fill="#3A1A10"/>
+          <path id="sourire" d="M128 128 Q150 150 172 128" fill="none" stroke="#3A1A10" stroke-width="6" stroke-linecap="round" opacity="0"/>
+        </g>
+      </g>
+    </svg>
+    <!-- bulle de pensée -->
+    <div class="it" id="pense" style="width:560px;height:360px">
+      <svg width="560" height="360" viewBox="0 0 560 360" style="position:absolute;left:0;top:0"><g fill="#fff" stroke="#D2DBDA" stroke-width="3">
+        <ellipse cx="280" cy="160" rx="260" ry="150"/><circle cx="70" cy="310" r="26"/><circle cx="30" cy="350" r="14"/></g></svg>
+      <div style="position:absolute;left:70px;top:58px;right:70px;text-align:center">
+        <div class="row" style="justify-content:center;gap:18px;font:700 34px var(--fb)"><span>Europe</span>
+          <svg width="150" height="40" viewBox="0 0 150 40"><path d="M6 20 H136" stroke="#0D5A66" stroke-width="5" stroke-dasharray="4 12" stroke-linecap="round"/><path d="M128 8 L144 20 L128 32" fill="none" stroke="#0D5A66" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Afrique</span></div>
+        <div style="font:900 92px var(--fd);color:var(--red);margin-top:16px">??? <span style="font-size:48px;color:var(--muted)">FCFA</span></div>
+      </div>
+    </div>
+    <div class="it disp" id="qm1" style="font:900 90px var(--fd);color:#C2412D">?</div>
+    <div class="it disp" id="qm2" style="font:900 70px var(--fd);color:#F2A71F">?</div>
+    <div class="it" id="idee" style="width:110px;height:110px;border-radius:50%;background:var(--mark);display:flex;align-items:center;justify-content:center;font:900 72px var(--fd)">!</div>
+
+    <!-- téléphone : recherche sur Internet -->
+    <div class="it phone" id="ph"><div class="scr">
+      <div class="search"><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="14" cy="14" r="10" fill="none" stroke="#566870" stroke-width="4"/><line x1="22" y1="22" x2="31" y2="31" stroke="#566870" stroke-width="4" stroke-linecap="round"/></svg><span id="q"></span><span class="caret" id="qc"></span></div>
+      <div id="resultats">
+        <div class="res" id="r1"><div class="u">douane-afrique.netlify.app</div><div class="t">Douane Afrique · Calculez vos frais de douane</div><div class="d">Droits de douane, TVA, prélèvements : le vrai prix de votre véhicule à l'arrivée, dans 8 pays de l'UEMOA.</div></div>
+        <div class="res" style="opacity:.5"><div class="u">forum-auto.example</div><div class="t">Combien coûte le dédouanement ?</div><div class="d">Discussion · 214 réponses…</div></div>
+        <div class="res" style="opacity:.35"><div class="u">annonces.example</div><div class="t">Voitures d'occasion à vendre</div></div>
+      </div>
+      <div class="notch"></div>
+      <div id="tap" style="position:absolute;left:0;top:0;width:110px;height:110px;border-radius:50%;border:5px solid rgba(13,90,102,.8);background:rgba(13,90,102,.18)"></div>
+    </div></div>
+
+    <!-- la vitrine -->
+    <div class="it" id="vit">
+      <div class="bar"><div style="display:flex;gap:10px"><i style="width:18px;height:18px;border-radius:50%;background:#E5776B"></i><i style="width:18px;height:18px;border-radius:50%;background:#EEC35A"></i><i style="width:18px;height:18px;border-radius:50%;background:#6CC07F"></i></div><div class="url">douane-afrique.netlify.app/vitrine</div></div>
+      <div class="navv"><span>← Calculateur de douane</span><span>Faire vérifier mon véhicule</span></div>
+      <div class="hero">
+        <div class="eyebrow" style="color:#F2C230">Dédouanement · Zone UEMOA</div>
+        <h1>Avant d'importer, pesez le vrai prix.</h1>
+        <p>Droits de douane, TVA, prélèvements : sachez exactement ce que vous paierez, avant que votre véhicule n'arrive au port.</p>
+        <div style="display:flex;flex-direction:column;gap:18px;margin-top:34px;align-items:flex-start">
+          <span class="hbtn" id="btnCalc" style="background:#F2C230;color:#15232A">Calculer mes frais</span>
+          <span class="hbtn" id="btnVerif" style="border:2px solid rgba(255,255,255,.45);color:#fff">Faire vérifier mon véhicule</span></div>
+        <svg id="bal" width="560" height="330" viewBox="-280 -120 560 330" style="position:absolute;right:20px;bottom:20px">
+          <g stroke="#F2C230" stroke-width="9" stroke-linecap="round" fill="none"><line x1="0" y1="-80" x2="0" y2="180"/><line x1="-110" y1="190" x2="110" y2="190"/></g>
+          <circle cx="0" cy="-92" r="13" fill="#F2C230"/>
+          <g id="beam"><line x1="-220" y1="-70" x2="220" y2="-70" stroke="#F2C230" stroke-width="9" stroke-linecap="round"/>
+            <g id="panG"><line x1="-220" y1="-70" x2="-262" y2="30" stroke="#F2C230" stroke-width="5"/><line x1="-220" y1="-70" x2="-178" y2="30" stroke="#F2C230" stroke-width="5"/><path d="M-275 30 Q-220 80 -165 30 Z" fill="#F2C230"/>
+              <g transform="translate(-258 -12) scale(.5)" fill="none" stroke="#F4F7F6" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 56 L14 40 Q18 30 30 28 L48 26 L64 12 Q70 8 80 8 L104 8 Q114 8 120 16 L132 30 Q142 32 144 42 L144 56"/><line x1="10" y1="56" x2="144" y2="56"/><circle cx="40" cy="58" r="11"/><circle cx="114" cy="58" r="11"/></g></g>
+            <g id="panD"><line x1="220" y1="-70" x2="178" y2="30" stroke="#F2C230" stroke-width="5"/><line x1="220" y1="-70" x2="262" y2="30" stroke="#F2C230" stroke-width="5"/><path d="M165 30 Q220 80 275 30 Z" fill="#F2C230"/>
+              <g fill="#F4F7F6"><ellipse cx="200" cy="18" rx="22" ry="8"/><ellipse cx="200" cy="8" rx="22" ry="8"/><ellipse cx="240" cy="18" rx="22" ry="8"/><ellipse cx="220" cy="-2" rx="22" ry="8"/></g>
+              <text x="220" y="-22" text-anchor="middle" font-family="Archivo" font-weight="800" font-size="24" fill="#F4F7F6">FCFA</text></g></g>
+        </svg>
+      </div>
+    </div>
+    <div class="it chip" id="pourquoi" style="background:var(--mark);color:var(--ink);font-size:46px;padding:24px 42px">Pourquoi nous choisir&nbsp;?</div>
+
+    <!-- les problèmes -->
+    <div class="it card" id="pb1" style="width:440px;height:300px;padding:34px"></div>
+    <div class="it card" id="pb2" style="width:440px;height:300px;padding:34px"></div>
+    <div class="it card" id="pb3" style="width:440px;height:300px;padding:34px"></div>
+    <div class="it card" id="pb4" style="width:440px;height:300px;padding:34px"></div>
+    <div class="it chip" id="fini" style="background:var(--ok);color:#fff;font-size:46px;padding:26px 46px">✓ Fini les mauvaises surprises&nbsp;!</div>
+
+    <!-- le calculateur -->
+    <div class="it card" id="calc">
+      <div class="grp" id="gForm">
+        <div class="eyebrow">Zone UEMOA · 8 pays</div>
+        <div class="disp" style="font:800 60px var(--fd);margin-top:10px">Votre véhicule</div>
+        <div style="font:500 28px var(--fb);color:var(--muted);margin-top:26px">Pays d'arrivée</div>
+        <div class="ctry" id="c1"><div>Côte d'Ivoire<small>Port d'Abidjan</small></div><div class="radio" id="r1"></div></div>
+        <div class="ctry" id="c2"><div>Sénégal<small>Port de Dakar</small></div><div class="radio" id="r2"></div></div>
+        <div class="ctry" id="c3"><div>Bénin<small>Port de Cotonou</small></div><div class="radio" id="r3"></div></div>
+        <div style="font:500 26px var(--fb);color:var(--muted);margin-top:14px">+ 5 autres pays de l'UEMOA</div>
+        <div class="fld" id="fy"><div class="k">Année de fabrication</div><div class="v"><span id="ty"></span><span class="caret" id="cy"></span></div></div>
+        <div class="fld" id="fp"><div class="k">Prix de l'annonce</div><div class="v"><span id="tp"></span><span class="caret" id="cp"></span></div></div>
+      </div>
+      <div class="grp" id="gBul">
+        <div class="row" style="justify-content:space-between"><span class="eyebrow">Bulletin d'estimation</span><span class="disp" style="font:800 36px var(--fd)">Port d'Abidjan</span></div>
+        <div style="font:500 28px var(--fb);color:var(--muted);margin-top:8px">Toyota Corolla · 2022 · 7 500 €</div>
+        <div id="lines" style="margin-top:20px"></div>
+        <div class="band"><span style="font:700 32px/1.15 var(--fb)">Total droits<br>et taxes</span><span class="row" style="gap:12px;align-items:baseline"><span class="row disp" id="odo" style="font:900 66px var(--fd)"></span><span class="mono" style="font:600 30px var(--fm)">FCFA</span></span></div>
+        <div class="row" id="cout" style="justify-content:space-between;margin-top:24px;font:600 32px var(--fb);color:var(--muted)"><span>Coût total à l'arrivée</span><span class="mono" style="color:var(--ink);font:700 38px var(--fm)">7 585 487 FCFA</span></div>
+      </div>
+      <div class="grp" id="gChk">
+        <div class="chip" id="age" style="background:var(--okbg);color:var(--ok);font-size:40px">✓&nbsp; Âge accepté · 4 ans</div>
+        <div class="disp" style="font:800 52px var(--fd);margin-top:46px">Papiers à préparer</div>
+        <div id="paps" style="margin-top:20px"></div>
+      </div>
+      <div class="grp" id="gVer">
+        <div class="disp" style="font:800 52px var(--fd)">Un doute sur l'annonce&nbsp;?</div>
+        <div class="hbtn" id="btnV" style="background:var(--accent);color:#fff;margin-top:30px;width:100%">Faire vérifier mon véhicule →</div>
+        <div style="margin-top:44px;border-top:2px solid var(--line);padding-top:36px">
+          <div class="row" style="gap:20px"><div style="width:76px;height:76px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font:900 30px var(--fd)">DA</div>
+            <div><div style="font:700 36px var(--fb)">Douane Afrique</div><div style="font:500 24px var(--fb);color:var(--ok)">WhatsApp · en ligne</div></div></div>
+          <div class="bub" id="wb" style="margin-top:28px;width:760px;background:var(--okbg);border-radius:8px 34px 34px 34px">Demande reçue ✓<br>On vérifie l'annonce avant que vous payiez.</div>
+          <div class="chip" id="w48" style="margin-top:22px;background:var(--bg);border:2px solid var(--line);font-size:32px">Réponse sous 48&nbsp;h</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- les pays -->
+    <div class="it" id="pays" style="width:960px;height:1150px">
+      <div class="disp" id="paysT1" style="position:absolute;left:0;right:0;top:0;text-align:center;font:800 64px var(--fd)">Aujourd'hui : <span style="color:var(--accent)">8 pays</span></div>
+      <div class="disp" id="paysT2" style="position:absolute;left:0;right:0;top:0;text-align:center;font:800 64px var(--fd)">Bientôt : <span style="color:#C98A00">toute l'Afrique</span></div>
+      <div id="dots" style="position:absolute;left:0;top:130px;width:960px;height:700px"></div>
+      <div id="paysN" style="position:absolute;left:0;right:0;top:880px;text-align:center;font:600 34px var(--fb);color:var(--muted)"></div>
+    </div>
+
+    <!-- particuliers, entreprises, gratuit -->
+    <div class="it chip" id="bP" style="background:#fff;border:3px solid var(--accent);color:var(--accent);font-size:44px">Particuliers</div>
+    <div class="it chip" id="bE" style="background:#fff;border:3px solid var(--accent);color:var(--accent);font-size:44px">Entreprises</div>
+    <div class="it disp" id="grat" style="padding:20px 46px;border:8px solid var(--ok);border-radius:24px;color:var(--ok);font:900 92px var(--fd);letter-spacing:.04em">GRATUIT</div>
+    <div class="it chip" id="vite" style="background:var(--mark);color:var(--ink);font-size:40px">⏳ Profitez-en avant que ça change&nbsp;!</div>
+
+    <!-- fin -->
+    <div class="it" id="fin" style="width:980px;text-align:center">
+      <div class="disp" style="font:900 112px var(--fd);letter-spacing:-.02em">Douane Afrique</div>
+      <div style="font:600 40px var(--fb);color:var(--muted);margin-top:8px">Avant d'importer, pesez le vrai prix.</div>
+    </div>
+    <div class="it chip" id="lien" style="background:var(--accent);color:#fff;font-size:46px;padding:24px 46px">Lien dans la bio ↓</div>
+    <div class="it mono" id="url" style="font:600 34px var(--fm);color:var(--muted)">douane-afrique.netlify.app</div>
+    <div class="it act" id="a1"><div class="c"><svg width="70" height="70" viewBox="0 0 70 70"><circle cx="30" cy="24" r="12" fill="none" stroke="#15232A" stroke-width="5"/><path d="M8 60 C 10 42, 50 42, 52 60" fill="none" stroke="#15232A" stroke-width="5" stroke-linecap="round"/><line x1="56" y1="20" x2="56" y2="40" stroke="#0D5A66" stroke-width="6" stroke-linecap="round"/><line x1="46" y1="30" x2="66" y2="30" stroke="#0D5A66" stroke-width="6" stroke-linecap="round"/></svg></div>S'abonner</div>
+    <div class="it act" id="a2"><div class="c"><svg width="70" height="70" viewBox="0 0 70 70"><path id="heart" d="M35 60 C 10 44, 6 30, 12 20 C 18 10, 30 10, 35 20 C 40 10, 52 10, 58 20 C 64 30, 60 44, 35 60 Z" fill="none" stroke="#15232A" stroke-width="5" stroke-linejoin="round"/></svg></div>J'aime</div>
+    <div class="it act" id="a3"><div class="c"><svg width="70" height="70" viewBox="0 0 70 70"><path d="M40 12 L62 32 L40 52 V40 C 24 40, 14 46, 8 58 C 10 38, 20 26, 40 24 Z" fill="none" stroke="#15232A" stroke-width="5" stroke-linejoin="round"/></svg></div>Partager</div>
+  </div>
+  <div id="rip"></div>
+  <div id="cur"><svg width="60" height="70" viewBox="0 0 60 70" style="position:absolute;left:-4px;top:-3px"><path d="M4 3 L4 52 L17 40 L27 63 L37 59 L27 36 L45 36 Z" fill="#15232A" stroke="#fff" stroke-width="4" stroke-linejoin="round"/></svg><div class="pillv">Vous</div></div>
+  <div id="caps"></div>
+</div>
+<script src="timing.js"></script>
+<script src="film.js"></script>
+</body>
+</html>
